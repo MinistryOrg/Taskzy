@@ -1,0 +1,27 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+  server:
+    build:
+      context: ./server
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    build:
+      context: ./db
+    ports:
+      - 5430:5432
+    environment:
+      - POSTGRES_DB=todoapp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=sakalam18
+
+
