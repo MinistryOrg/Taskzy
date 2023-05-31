@@ -190,6 +190,8 @@ services:
       limits:
         cpus: '0.5'  # Maximum 50% of CPU resources
         memory: 512M  # Maximum 512 megabytes of memory
+    volumes:
+      - ./client/data:/app/data  # Mounting a volume for the client service
 
   server:
     build:
@@ -202,6 +204,8 @@ services:
       limits:
         cpus: '1'  # Maximum 100% of CPU resources
         memory: 1G  # Maximum 1 gigabyte of memory
+    volumes:
+      - ./server/data:/app/data  # Mounting a volume for the server service
 
   db:
     build:
@@ -216,4 +220,6 @@ services:
       limits:
         cpus: '0.5'  # Maximum 50% of CPU resources
         memory: 2G  # Maximum 2 gigabytes of memory
+    volumes:
+      - ./db/data:/var/lib/postgresql/data  # Mounting a volume for the db service
 ```
