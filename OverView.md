@@ -186,6 +186,11 @@ services:
       - 3000:3000
     depends_on:
       - server
+    resources:
+      limits:
+        cpus: '0.5'  # Maximum 50% of CPU resources
+        memory: 512M  # Maximum 512 megabytes of memory
+
   server:
     build:
       context: ./server
@@ -193,6 +198,11 @@ services:
       - 8000:8000
     depends_on:
       - db
+    resources:
+      limits:
+        cpus: '1'  # Maximum 100% of CPU resources
+        memory: 1G  # Maximum 1 gigabyte of memory
+
   db:
     build:
       context: ./db
@@ -201,5 +211,9 @@ services:
     environment:
       - POSTGRES_DB=todoapp
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=’your_password’
+      - POSTGRES_PASSWORD=sakalam18
+    resources:
+      limits:
+        cpus: '0.5'  # Maximum 50% of CPU resources
+        memory: 2G  # Maximum 2 gigabytes of memory
 ```
