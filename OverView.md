@@ -177,7 +177,11 @@ COPY init.sql /docker-entrypoint-initdb.d/init.sql
 ```
 Docker yml:
 ```Dockerfile
-version: '3'
+version: '3.1'
+
+networks:
+  todoapplab-network:
+
 services:
   client:
     build:
@@ -186,13 +190,12 @@ services:
       - 3000:3000
     depends_on:
       - server
-    resources:
-      limits:
-        cpus: '0.5'  # Maximum 50% of CPU resources
-        memory: 512M  # Maximum 512 megabytes of memory
-    volumes:
-      - ./client/data:/app/data  # Mounting a volume for the client service
-
+    networks:
+      - todoapplab-network
+    restart: 
+      on-failure
+    mem_limit: 
+      500M
   server:
     build:
       context: ./server
@@ -200,13 +203,12 @@ services:
       - 8000:8000
     depends_on:
       - db
-    resources:
-      limits:
-        cpus: '1'  # Maximum 100% of CPU resources
-        memory: 1G  # Maximum 1 gigabyte of memory
-    volumes:
-      - ./server/data:/app/data  # Mounting a volume for the server service
-
+    networks:
+      - todoapplab-network
+    restart: 
+      on-failure
+    mem_limit: 
+      500M
   db:
     build:
       context: ./db
@@ -216,10 +218,9 @@ services:
       - POSTGRES_DB=todoapp
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=sakalam18
-    resources:
-      limits:
-        cpus: '0.5'  # Maximum 50% of CPU resources
-        memory: 2G  # Maximum 2 gigabytes of memory
-    volumes:
-      - ./db/data:/var/lib/postgresql/data  # Mounting a volume for the db service
+      - todoapplab-network
+    networks:
+      - todoapplab-network
+    mem_limit: 
+      1G
 ```
